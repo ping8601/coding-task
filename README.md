@@ -53,7 +53,7 @@ pip install reportlab
 pip install rpy2==3.5.1
 ```
 
-5. Start the Flask server.
+3. Start the Flask server.
 
 ```bash
 flask run
