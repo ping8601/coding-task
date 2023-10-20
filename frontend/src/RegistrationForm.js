@@ -32,6 +32,17 @@ const RegistrationForm = () => {
       formData.dob &&
       formData.email
     ) {
+      // test if email address is valid
+      var emailPattern = /^[\w.-]+@[\w.-]+\.\w+$/;
+      if (!emailPattern.test(formData.email)) {
+        alert('Invalid email address.');
+        return;
+      }
+      // test if dob is valid
+      if (new Date(formData.dob) > new Date()) {
+        alert('Invalid date.');
+        return;
+      }
       // All fields are filled, so proceed with form submission
       fetch(url +'/api/submit', {
         method: 'POST',
