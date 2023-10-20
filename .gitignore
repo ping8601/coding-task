@@ -1,0 +1,7 @@
+# email info
+backend/email_info.py
+
+# output result
+backend/__pycache__/
+backend/registration_info.pdf
+*.pyc
