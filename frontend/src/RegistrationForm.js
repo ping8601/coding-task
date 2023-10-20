@@ -93,11 +93,12 @@ const RegistrationForm = () => {
             <label>Female</label>
           </div>
         </div>
+        <div></div>
+        <label>Date of Birth</label>
         <input
           type="date"
           name="dob"
           value={formData.dob}
-          placeholder="Date of Birth"
           onChange={handleChange}
         />
         <input

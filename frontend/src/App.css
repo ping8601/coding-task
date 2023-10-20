@@ -28,9 +28,11 @@ form {
 }
 
 label {
+  display: flex;
   font-size: 14px;
   margin: 6px;
   color: #666;
+  align-items: start;
 }
 
 input[type="text"],
