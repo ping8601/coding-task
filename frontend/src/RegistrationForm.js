@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './App.css';
 
 const RegistrationForm = () => {
+  const url = 'http://127.0.0.1:5000/';
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -10,7 +11,7 @@ const RegistrationForm = () => {
     email: '',
   });
 
-  const [buttonClicked, setButtonClicked] = useState(false);
+  const [buttonClicked] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -18,6 +19,7 @@ const RegistrationForm = () => {
   };
 
   const handleButtonClick = () => {
+    // Validate that all required fields are filled
     if (
       formData.firstName &&
       formData.lastName &&
@@ -25,9 +27,29 @@ const RegistrationForm = () => {
       formData.dob &&
       formData.email
     ) {
-      setButtonClicked(true);
+      // All fields are filled, so proceed with form submission
+      fetch(url +'/api/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData), // Convert formData to JSON
+      })
+        .then((response) => {
+          if (response.ok) {
+            // Successful submission, you can handle the response here
+            console.log('Form submitted successfully');
+          } else {
+            // Handle errors if the submission fails
+            console.error('Form submission failed');
+          }
+        })
+        .catch((error) => {
+          console.error('An error occurred:', error);
+        });
     } else {
-      alert('Please enter all the fields!');
+      // If any required field is missing, show an error message to the user
+      alert('Please fill in all required fields.');
     }
   };
 
