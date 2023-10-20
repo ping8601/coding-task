@@ -15,25 +15,45 @@ CORS(app)
 # API route to receive form data and trigger R code, PDF generation, and email sending
 @app.route('/api/submit', methods=['POST'])
 def submit_form():
+    """
+    Process the submitted form data, generate a PDF, and send it via email.
+
+    This route is responsible for handling form submissions, processing the data using R scripts,
+    creating a PDF report, and sending it as an email attachment.
+
+    Returns:
+        JSON: A response indicating the status of the operation.
+    """
     data = request.get_json()
 
+    # process the data with R script
     r_output = r_process_data(data['dob'])
 
+    # generate the pdf file
     pdf_filename = 'registration_info.pdf'
     create_pdf(pdf_filename, data, r_output)
 
-    # Send the PDF to the user's email
+    # send the PDF to the user's email
     email_sender = email_info.sender
     email_receiver = data['email']
     email_password = email_info.password
     email_subject = 'Registration Report'
-    email_body = "Please find the attached PDF report."
+    email_body = 'Please find the attached PDF report.'
 
     send_email(email_subject, email_body, email_sender, email_receiver, email_password, pdf_filename)
 
     return jsonify({'status': 'success', 'message': 'Data received and processed successfully'}), 200
 
 def r_process_data(date_of_birth):
+    """
+    Process date of birth using R script to calculate age and day of the week.
+
+    Args:
+        date_of_birth (str): A string representing the date of birth in the format 'YYYY-MM-DD'.
+
+    Returns:
+        List: A list containing age and day of the week.
+    """
     # R script for age calculation and day of the week determination
     r_script = """
     date_of_birth <- as.Date("%s", format="%%Y-%%m-%%d")
@@ -51,6 +71,14 @@ def r_process_data(date_of_birth):
         return r_output
 
 def create_pdf(file_name, data, r_output):
+    """
+    Create a PDF report with registration information.
+
+    Args:
+        file_name (str): Name of the PDF file.
+        data (dict): Form data containing user information.
+        r_output (list): Output from the R script containing age and day of the week.
+    """
     c = canvas.Canvas(file_name)
     c.drawString(250, 800, "Registration Info")
     c.drawString(100, 750, "Name: {} {}".format(data['firstName'], data['lastName']))
@@ -59,6 +87,17 @@ def create_pdf(file_name, data, r_output):
     c.save()
 
 def send_email(subject, body, sender, recipient, password, attachment):
+    """
+    Send an email with an attachment.
+
+    Args:
+        subject (str): Email subject.
+        body (str): Email body text.
+        sender (str): Sender's email address.
+        recipient (str): Recipient's email address.
+        password (str): Sender's email password.
+        attachment (str): File path to the attachment.
+    """
     msg = MIMEMultipart()
     msg['Subject'] = subject
     msg['From'] = sender
