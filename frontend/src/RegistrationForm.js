@@ -2,7 +2,10 @@ import React, { useState } from 'react';
 import './App.css';
 
 const RegistrationForm = () => {
+  // Define the API URL for form submission (backend)
   const url = 'http://127.0.0.1:5000/';
+
+  // Define and initialize the state for form data and button click status
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -13,11 +16,13 @@ const RegistrationForm = () => {
 
   const [buttonClicked] = useState(false);
 
+  // Handle input field changes and update form data state
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
+  // Handle form submission when the "Register" button is clicked
   const handleButtonClick = () => {
     // Validate that all required fields are filled
     if (
@@ -37,7 +42,7 @@ const RegistrationForm = () => {
       })
         .then((response) => {
           if (response.ok) {
-            // Successful submission, you can handle the response here
+            // Successful submission
             alert('Form submitted successfully. Register info has been sent to your email.');
           } else {
             // Handle errors if the submission fails
