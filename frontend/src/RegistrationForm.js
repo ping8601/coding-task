@@ -38,10 +38,10 @@ const RegistrationForm = () => {
         .then((response) => {
           if (response.ok) {
             // Successful submission, you can handle the response here
-            console.log('Form submitted successfully');
+            alert('Form submitted successfully. Register info has been sent to your email.');
           } else {
             // Handle errors if the submission fails
-            console.error('Form submission failed');
+            alert('Form submission failed.');
           }
         })
         .catch((error) => {

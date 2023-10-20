@@ -31,7 +31,7 @@ def submit_form():
 
     send_email(email_subject, email_body, email_sender, email_receiver, email_password, pdf_filename)
 
-    return jsonify({'message': 'Data received and processed successfully'})
+    return jsonify({'status': 'success', 'message': 'Data received and processed successfully'}), 200
 
 def r_process_data(date_of_birth):
     # R script for age calculation and day of the week determination
